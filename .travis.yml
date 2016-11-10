@@ -7,18 +7,29 @@ matrix:
       sudo: required
       env:
         - BUILD_APIDOC=true
+        - BUILD_CMAKE=true
         # Auth token to push API documentation
         - secure: "JKeXk8p65hodb12PVRST6A90swsNubc+46EbSJGSghldIxbFWLBAlwU+KLeOMO4V0veu6k4lnMa50V0UYFZmoUsS6W0aL5Ybo98SpzXHiNLOmOluoqJoF9TBsOTCCRFbWbccgJyVEtulgRcdml96naS51lq9Sw/VO/N3Z472304="
     - os: linux
       dist: trusty
       compiler: gcc
       sudo: required
+      env:
+        - BUILD_CMAKE=true
     - os: osx
       osx_image: xcode6.4
       compiler: clang
+      env:
+        - BUILD_CMAKE=false
+    - os: osx
+      osx_image: xcode6.4
+      compiler: clang
+      env:
+        - BUILD_CMAKE=true
   allow_failures:
     - env:
       - BUILD_APIDOC=true
+      - BUILD_CMAKE=true
       - secure: "JKeXk8p65hodb12PVRST6A90swsNubc+46EbSJGSghldIxbFWLBAlwU+KLeOMO4V0veu6k4lnMa50V0UYFZmoUsS6W0aL5Ybo98SpzXHiNLOmOluoqJoF9TBsOTCCRFbWbccgJyVEtulgRcdml96naS51lq9Sw/VO/N3Z472304="
 install:
   - >
@@ -52,26 +63,26 @@ before_script:
       echo -e "url=https://freeorion-bot:${FreeOrion_AUTH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git\n" | git credential approve
     fi
   - >
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+    if [[ "${BUILD_CMAKE}" == "true" ]]; then
       mkdir build
       cd build
     fi
   - >
-    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+    if [[ "${TRAVIS_OS_NAME}" == "osx" && "${BUILD_CMAKE}" == "false" ]]; then
       cd Xcode
     fi
 script:
   - >
-    if [[ "${BUILD_APIDOC}" == "true" && "${TRAVIS_BRANCH}" == "master" ]]; then
+    if [[ "${BUILD_CMAKE}" == "true" && "${BUILD_APIDOC}" == "true" && "${TRAVIS_BRANCH}" == "master" ]]; then
       cmake ..
       cmake --build . --target apidoc-deploy
     fi
   - >
-    if [[ "${TRAVIS_OS_NAME}" == "linux" && -z "${BUILD_APIDOC}" ]]; then
+    if [[ "${BUILD_CMAKE}" == "true" && -z "${BUILD_APIDOC}" ]]; then
       cmake ..
       cmake --build .
     fi
   - >
-    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+    if [[ "${BUILD_CMAKE}" == "false" && "${TRAVIS_OS_NAME}" == "osx" ]]; then
       xcodebuild -project FreeOrion.xcodeproj -configuration Release -alltargets
     fi
