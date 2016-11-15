@@ -97,17 +97,6 @@ namespace {
         const std::string m_category;
     };
 
-    struct SetAllCategoryViewsFunctor {
-        SetAllCategoryViewsFunctor(TechTreeWnd* tree_wnd) :
-            m_tree_wnd(tree_wnd)
-        {}
-        void operator()(bool b) {
-            if (m_tree_wnd)
-                b ? m_tree_wnd->ShowAllCategories() : m_tree_wnd->HideAllCategories();
-        }
-        TechTreeWnd* const m_tree_wnd;
-    };
-
     struct SetTechStatusViewFunctor {
         SetTechStatusViewFunctor(TechTreeWnd* tree_wnd, TechStatus status) :
             m_tree_wnd(tree_wnd),
@@ -1913,8 +1902,12 @@ TechTreeWnd::TechTreeWnd(GG::X w, GG::Y h, bool initially_hidden /*= true*/) :
     for (std::map<std::string, GG::StateButton*>::value_type& cat_button : m_tech_tree_controls->m_cat_buttons)
     { GG::Connect(cat_button.second->CheckedSignal, SetCategoryViewFunctor(this, cat_button.first)); }
 
-    // connect button for all categories to update display
-    GG::Connect(m_tech_tree_controls->m_all_cat_button->CheckedSignal, SetAllCategoryViewsFunctor(this));
+    m_tech_tree_controls->m_all_cat_button->CheckedSignal.connect([this](bool checked) {
+        if(checked)
+            this->ShowAllCategories();
+        else
+            this->HideAllCategories();
+    });
 
     // connect status and type button clicks to update display
     for (std::map<TechStatus, GG::StateButton*>::value_type& status_button : m_tech_tree_controls->m_status_buttons)
