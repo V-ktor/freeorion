@@ -578,10 +578,6 @@ CUIStateButton::CUIStateButton(const std::string& str, GG::Flags<GG::TextFormat>
 ///////////////////////////////////////
 // class CUITabBar
 ///////////////////////////////////////
-CUITabBar::CUITabBar(const boost::shared_ptr<GG::Font>& font, GG::Clr color, GG::Clr text_color) :
-    GG::TabBar(font, color, text_color)
-{}
-
 void CUITabBar::DistinguishCurrentTab(const std::vector<GG::StateButton*>& tab_buttons) {
     RaiseCurrentTabButton();
     int index = CurrentTabIndex();
