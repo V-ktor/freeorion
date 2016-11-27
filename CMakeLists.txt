@@ -76,6 +76,7 @@ if (WIN32)
         set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:LIBCMT")
     endif ()
 elseif (APPLE)
+    set (CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/Xcode/dep/")
     add_definitions(-DFREEORION_MACOSX)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     add_definitions(
