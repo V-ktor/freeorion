@@ -16,9 +16,9 @@
 INCLUDE(FindPackageHandleStandardArgs)
 INCLUDE(HandleLibraryTypes)
 
-FIND_PATH(VORBIS_INCLUDE_DIR vorbis/codec.h
+FIND_PATH(VORBIS_INCLUDE_DIR codec.h
   PATHS $ENV{VORBISDIR}
-  PATH_SUFFIXES include
+  PATH_SUFFIXES vorbis
 )
 FIND_LIBRARY(VORBIS_LIBRARY_OPTIMIZED
   NAMES vorbis libvorbis
