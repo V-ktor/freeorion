@@ -94,8 +94,8 @@ set(SDL2_SEARCH_PATHS
 find_path(SDL2_INCLUDE_DIR SDL.h
   HINTS
     $ENV{SDL2DIR}
-  PATH_SUFFIXES include/SDL2 include
-	PATHS ${SDL2_SEARCH_PATHS}
+  PATH_SUFFIXES SDL2
+  PATHS ${SDL2_SEARCH_PATHS}
 )
 
 # SDL-1.1 is the name used by FreeBSD ports...
