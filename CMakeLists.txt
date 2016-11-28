@@ -102,7 +102,7 @@ endif ()
 # If dynamically, add some macro definitions to prevent potential link errors
 option(FO_LINK_STATIC_BOOST_LIBS "Link static boost libraries." OFF)
 
-if (NOT FO_LINK_STATIC_BOOST_LIBS)
+if ((NOT FO_LINK_STATIC_BOOST_LIBS) AND (NOT APPLE))
     add_definitions(
         -DBOOST_ALL_NO_LINK
         -DBOOST_ALL_DYN_LINK
