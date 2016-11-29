@@ -79,9 +79,17 @@ add_library(freeorionparse
 target_compile_options(
     freeorionparse PRIVATE
     $<$<CXX_COMPILER_ID:gnu>:-fvisibility=hidden>
+    $<$<CXX_COMPILER_ID:clang>:-fvisibility=hidden>
     $<$<AND:$<NOT:$<BOOL:${BUILD_TESTS}>>,$<CXX_COMPILER_ID:gnu>>:-O3>
     $<$<CXX_COMPILER_ID:clang>:-ftemplate-depth=512>
 )
+
+if(APPLE)
+    set_target_properties(freeorionparse
+        PROPERTIES
+        LINK_FLAGS "-undefined dynamic_lookup"
+    )
+endif()
 
 install(
     TARGETS freeorionparse
