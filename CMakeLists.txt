@@ -351,6 +351,7 @@ add_library(freeorioncommon
 target_compile_options(
     freeorioncommon PRIVATE
     $<$<CXX_COMPILER_ID:gnu>:-fvisibility=hidden>
+    $<$<CXX_COMPILER_ID:clang>:-fvisibility=hidden>
     $<$<CXX_COMPILER_ID:clang>:-ftemplate-depth=512>
 )
 
